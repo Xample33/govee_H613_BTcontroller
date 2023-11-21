@@ -3,59 +3,36 @@ from bleak import BleakClient
 from bleak.exc import BleakDeviceNotFoundError
 import math
 
+from constants import Constants
+
 # Govee LED MAC Address
 MAC_ADDRESS = 'A4:C1:38:35:97:24'
 govee_mac_address2 = '60:74:F4:0D:DC:AD'
 
-class Constants:
-    # Bluetooth timeout
-    BT_TIMEOUT = 15
-    
-    # Delay between commands
-    COMMAND_DELAY = 2
-    
-    # Control Service and Characteristic UUIDs
-    WRITE_CHARACTERISTIC_UUID = '00010203-0405-0607-0809-0a0b0c0d2b11'
-    READ_CHARACTERISTIC_UUID = '00010203-0405-0607-0809-0a0b0c0d2b10'
-    
-    # LED Command Strings
-    TURN_ON_COMMAND = '3301010000000000000000000000000000000033'
-    TURN_OFF_COMMAND = '3301000000000000000000000000000000000032'
-    
-    POWER_STATUS = 'aa010000000000000000000000000000000000ab'
-    RGB_STATUS = 'aa050100000000000000000000000000000000ae'
-    BRIGHTNESS_STATUS = 'aa040000000000000000000000000000000000ae'
-    
-    COLORS = [
-    ("black", (0, 0, 0)),
-    ("silver", (192, 192, 192)),
-    ("gray", (128, 128, 128)),
-    ("white", (255, 255, 255)),
-    ("maroon", (128, 0, 0)),
-    ("red", (255, 0, 0)),
-    ("dark_red", (139, 0, 0)),
-    ("light_red", (255, 99, 71)),
-    ("purple", (128, 0, 128)),
-    ("fuchsia", (255, 0, 255)),
-    ("dark_fuchsia", (128, 0, 128)),
-    ("light_fuchsia", (255, 182, 193)),
-    ("green", (0, 128, 0)),
-    ("lime", (0, 255, 0)),
-    ("dark_green", (0, 100, 0)),
-    ("light_green", (144, 238, 144)),
-    ("olive", (128, 128, 0)),
-    ("yellow", (255, 255, 0)),
-    ("dark_yellow", (184, 134, 11)),
-    ("light_yellow", (255, 255, 224)),
-    ("navy", (0, 0, 128)),
-    ("blue", (0, 0, 255)),
-    ("dark_blue", (0, 0, 139)),
-    ("light_blue", (173, 216, 230)),
-    ("teal", (0, 128, 128)),
-    ("aqua", (0, 255, 255)),
-    ("dark_aqua", (0, 139, 139)),
-    ("light_aqua", (224, 255, 255)),
-]
+def input_checker(func):
+    def wrapper(*args, **kwargs):
+        if func.__name__ == 'set_brightness':
+            # Custom validation for set_brightness function
+            if len(args) != 2:
+                raise TypeError("set_brightness function requires exactly 2 arguments")
+
+            device, value = args
+            if not isinstance(device, str) or not isinstance(value, int) or not (0 <= value <= 255):
+                raise TypeError("Invalid input for set_brightness function")
+
+        elif func.__name__ == 'turn_on':
+            # Custom validation for turn_on function
+            if len(args) < 1 or len(args) > 2:
+                raise TypeError("turn_on function requires 1 or 2 arguments")
+            device = args[0]
+            smooth = kwargs.get('smooth', False)
+            if not isinstance(device, str) or not isinstance(smooth, bool):
+                raise TypeError("Invalid input for turn_on function")
+
+        result = func(*args, **kwargs)
+        return result
+
+    return wrapper
     
 def convert_color(rgb_tuple = None, color_name = None):
     def distance(a, b):
@@ -148,7 +125,12 @@ async def turn_on(ble_device):
     command_bytes = to_bytes('3301010000000000000000000000000000000033')
     await send_command(ble_device, command_bytes)
 
-async def turn_off(ble_device):
+async def turn_off(ble_device, smooth=False):
+    if smooth:
+        for i in range(255, 0, -50):
+            await set_brightness(ble_device, i)
+            await asyncio.sleep(0.15)
+            
     command_bytes = to_bytes('3301000000000000000000000000000000000032')
     await send_command(ble_device, command_bytes)
 
@@ -213,18 +195,10 @@ async def main():
             if power == 0:
                 print("Turning on LED")
                 await turn_on(device)
+                await set_brightness(device, 255)
             
-            print("changing color")
-            await set_color(device, 'red')
-            #await send_command(device, to_bytes('33050200FF4000FFAE540000000000000000008E'))
-            
-            print("Getting LED color")
-            await get_rgb(device)
-            
-            print("Getting LED brightness")
-            await get_brightness(device)
-            
-            
+            await turn_off(device, smooth=True)
+        
             await device.disconnect()
             
     except BleakDeviceNotFoundError:
@@ -236,4 +210,4 @@ if __name__ == "__main__":
     try:
         asyncio.run(main())
     except KeyboardInterrupt:
-        print('Keyboard interrupt')
+        print('Stopped by user')
