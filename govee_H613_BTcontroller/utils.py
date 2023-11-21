@@ -36,7 +36,7 @@ def convert_color(rgb_tuple = None, color_name = None):
         return color_name_to_rgb(color_name)
 
 def calculate_string(rgb):
-    r,g,b = rgb
+    r, g, b = rgb
 
     hex_r = hex(r)[2:].zfill(2)
     hex_g = hex(g)[2:].zfill(2)
@@ -48,7 +48,7 @@ def calculate_string(rgb):
 
 def split_string(string):
     # Split the string into groups of two characters
-    pairs = [string[i:i+2] for i in range(0, len(string), 2)]
+    pairs = [string[i:i + 2] for i in range(0, len(string), 2)]
 
     # Convert each pair to a byte and create a bytes object
     result_bytes = bytes([int(pair, 16) for pair in pairs])
