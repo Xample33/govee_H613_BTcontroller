@@ -1,12 +1,16 @@
 import asyncio
 from bleak import BleakClient
+from bleak.exc import BleakDeviceNotFoundError
 import math
 
 # Govee LED MAC Address
-govee_mac_address = 'A4:C1:38:35:97:24'
+MAC_ADDRESS = 'A4:C1:38:35:97:24'
 govee_mac_address2 = '60:74:F4:0D:DC:AD'
 
 class Constants:
+    # Bluetooth timeout
+    BT_TIMEOUT = 15
+    
     # Delay between commands
     COMMAND_DELAY = 2
     
@@ -198,31 +202,33 @@ async def get_brightness(device):
 async def main():
     try:
         # Connect to Govee LED
-        async with BleakClient(govee_mac_address) as govee_device:
-            device_name = await govee_device.read_gatt_char("00002a00-0000-1000-8000-00805f9b34fb")
-            print(f'Connected to {govee_device.address} ({device_name.decode("utf-8")})')
+        async with BleakClient(MAC_ADDRESS, timeout=Constants.BT_TIMEOUT) as device:
+            device_name = await device.read_gatt_char("00002a00-0000-1000-8000-00805f9b34fb")
+            print(f'Connected to {device.address} ({device_name.decode("utf-8")})')
             await asyncio.sleep(0.3) 
             
             print("Getting LED power")
-            power = await get_power(govee_device)
+            power = await get_power(device)
             
             if power == 0:
                 print("Turning on LED")
-                await turn_on(govee_device)
+                await turn_on(device)
             
             print("changing color")
-            await set_color(govee_device, 'lime')
-            #await send_command(govee_device, to_bytes('33050200FF4000FFAE540000000000000000008E'))
+            await set_color(device, 'red')
+            #await send_command(device, to_bytes('33050200FF4000FFAE540000000000000000008E'))
             
             print("Getting LED color")
-            await get_rgb(govee_device)
+            await get_rgb(device)
             
             print("Getting LED brightness")
-            await get_brightness(govee_device)
+            await get_brightness(device)
             
             
-            await govee_device.disconnect()
+            await device.disconnect()
             
+    except BleakDeviceNotFoundError:
+        print(f"Could not find device with MAC address {MAC_ADDRESS}")
     except Exception as e:
         print(f"An error occurred: {e}")
 
