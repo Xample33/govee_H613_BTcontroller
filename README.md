@@ -4,9 +4,9 @@
 
 <p align="center">  
   <a href="https://github.com/astral-sh/ruff"><img alt="Ruff" src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json"></a>
-  <a href="https://pypi.org/project/cvehunter"><img alt="PyPI - Version" src="https://badgen.net/pypi/v/govee_H613_BTcontroller"></a>
-  <a href="https://pypi.org/project/cvehunter"><img alt="PyPI - Python Version" src="https://badgen.net/pypi/python/govee_H613_BTcontroller"></a>
-  <a href="https://pypi.org/project/cvehunter"><img alt="PyPI - Downloads" src="https://badgen.net/pypi/dm/govee_H613_BTcontroller"></a>
+  <a href="https://pypi.org/project/govee_H613_BTcontroller"><img alt="PyPI - Version" src="https://badgen.net/pypi/v/govee_H613_BTcontroller"></a>
+  <a href="https://pypi.org/project/govee_H613_BTcontroller"><img alt="PyPI - Python Version" src="https://badgen.net/pypi/python/govee_H613_BTcontroller"></a>
+  <a href="https://pypi.org/project/govee_H613_BTcontroller"><img alt="PyPI - Downloads" src="https://badgen.net/pypi/dm/govee_H613_BTcontroller"></a>
   <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FXample33%2Fgovee_H613_BTcontroller&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false">
 </p>
 
