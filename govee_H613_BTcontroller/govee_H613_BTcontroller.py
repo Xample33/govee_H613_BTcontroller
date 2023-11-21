@@ -23,8 +23,7 @@ class GoveeController:
             try:
                 await self.client.connect()
             except BleakDeviceNotFoundError:
-                print(f'Could not connect to {self.mac_address}')
-                raise SystemExit(1)
+                raise BleakDeviceNotFoundError(f'Could not connect to {self.mac_address}')
 
             raw_name = await self.client.read_gatt_char(Constants.GET_NAME_UUID)
             self.name = raw_name.decode("utf-8")
