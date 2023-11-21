@@ -8,7 +8,7 @@ def read(fname):
 
 setup(
     name="govee_H613_BTcontroller",
-    version="0.0.1",
+    version="1.0.1",
     packages=["govee_H613_BTcontroller"],
     author="Xample33",
     maintainer="Xample33",
