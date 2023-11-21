@@ -1,5 +1,7 @@
-from .constants import Constants
 import math
+
+from .constants import Constants
+
 
 def convert_color(rgb_tuple = None, color_name = None):
     def distance(a, b):
@@ -26,22 +28,22 @@ def convert_color(rgb_tuple = None, color_name = None):
 
     if rgb_tuple is None and color_name is None:
         return None
-    
+
     if rgb_tuple is not None:
         return rgb_to_color_name(rgb_tuple)
-    
+
     if color_name is not None:
         return color_name_to_rgb(color_name)
-    
+
 def calculate_string(rgb):
     r,g,b = rgb
-    
+
     hex_r = hex(r)[2:].zfill(2)
     hex_g = hex(g)[2:].zfill(2)
     hex_b = hex(b)[2:].zfill(2)
-    
+
     checksum = hex(r ^ g ^ b ^ 0x31)[2:].zfill(2)
-    
+
     return f'330502{hex_r}{hex_g}{hex_b}00FFAE54000000000000000000{checksum}'.upper()
 
 def split_string(string):
