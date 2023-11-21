@@ -75,7 +75,7 @@ class GoveeController:
         if not isinstance(brightness, int):
             raise TypeError("Brightness must be an integer")
 
-        if (brightness < 0) or (brightness > 255):
+        if (brightness < Constants.BRIGHTNESS_MIN) or (brightness > Constants.BRIGHTNESS_MAX):
             raise ValueError("Brightness must be between 0 and 255")
 
         # Calculate the brightness hex value
