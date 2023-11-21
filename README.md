@@ -17,7 +17,7 @@ pip3 install govee_H613_BTcontroller
 ```
 
 ## Example
-Code:
+
 ```python
 import asyncio
 from govee_H613_BTcontroller import GoveeController
