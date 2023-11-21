@@ -8,7 +8,8 @@ class Constants:
     # BRIGHNESS VALUES
     BRIGHTNESS_MIN = 0
     BRIGHTNESS_MAX = 255
-
+    
+    # Device Service UUID
     GET_NAME_UUID = '00002a00-0000-1000-8000-00805f9b34fb'
 
     # Control Service and Characteristic UUIDs
