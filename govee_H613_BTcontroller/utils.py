@@ -64,3 +64,29 @@ def is_valid_color(color_name):
         if color_name.lower() == name.lower():
             return True
     return False
+
+def make_string(rgb):
+    r, g, b = rgb
+
+    hex_r = hex(r)[2:].zfill(2)
+    hex_g = hex(g)[2:].zfill(2)
+    hex_b = hex(b)[2:].zfill(2)
+    
+    string_rgb = f'330502{hex_r}{hex_g}{hex_b}00FFAE54000000000000000000'
+    
+    checksum = calculate_xor(string_rgb)
+    
+    string = string_rgb + checksum
+    
+    return string.upper()
+
+def calculate_xor(string):
+    # Split the string into groups of two characters
+    pairs = [string[i:i + 2] for i in range(0, len(string), 2)]
+
+    # Convert each pair to an integer and calculate the XOR
+    xor_result = int(pairs[0], 16)
+    for pair in pairs[1:]:
+        xor_result ^= int(pair, 16)
+
+    return hex(xor_result)[2:].zfill(2)
