@@ -3,7 +3,7 @@ class Constants:
     BT_TIMEOUT = 15
 
     # Delay between commands
-    COMMAND_DELAY = 2
+    COMMAND_DELAY = 0.3
     
     # BRIGHNESS VALUES
     BRIGHTNESS_MIN = 0
@@ -26,6 +26,8 @@ class Constants:
 
     COLORS = [
         ("white", (255, 255, 255)),
+        ("warm_white", (255, 166, 87)),
+        ("cool_white", (255, 254, 250)),
 
         ("black", (0, 0, 0)),
 
