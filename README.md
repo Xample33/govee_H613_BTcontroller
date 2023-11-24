@@ -40,6 +40,9 @@ if __name__ == '__main__':
     asyncio.run(main())
 ```
 
+## Credits
+This project is based on the work done by [Govee-Reverse-Engineering](https://github.com/egold555/Govee-Reverse-Engineering) and [govee-btled-H613B](https://github.com/gilcu3/govee-btled-H613B)
+
 ## Contributing
 Contributions are welcome! Feel free to open a PR.
 
